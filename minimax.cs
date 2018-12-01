@@ -143,15 +143,15 @@ namespace minMaxApp {
       //Checks win conditions and returning score if met
 
       if (checkWin(newBoard)=="X") {
-        Move m = new Move(-1,-10);
+        Move m = new Move(-1,-1,-1,-10);
         return m;
       }
       else if (checkWin(newBoard)=="O") {
-        Move m = new Move(-1,10);
+        Move m = new Move(-1,-1,-1,10);
         return m;
       }
       else if (checkFull(newBoard)) {
-        Move m = new Move(-1,0);
+        Move m = new Move(-1,-1,-1,0);
         return m;
       }
       List<Move> moves = new List<Move>();
@@ -161,8 +161,8 @@ namespace minMaxApp {
         for (int j = 0; j < 3; j++) {
           for (int k = 0; k < 3; k++) {
             if (!(checkSpaceFull(newBoard,i,j,k))) {
-              Move move = new Move(j,k,l,-1);
-              newBoard[j,k,l] = player;
+              Move move = new Move(i,j,k,-1);
+              newBoard[i,j,k] = player;
               if (player == cPlayer) {
                 //Recursion to check all possible moves
                 Move result = new Move(-1,-1,-1,-1);
@@ -175,7 +175,7 @@ namespace minMaxApp {
                 move.setScore(result.getScore());
               }
               //Replacing lost element and adding potential move to list
-              newBoard[j,k,l] = 0;
+              newBoard[i,j,k] = "0";
               moves.Add(move);
             }
           }
