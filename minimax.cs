@@ -83,7 +83,7 @@ namespace minMaxApp {
     }
 
     //Chekcs win conditions
-    public string CheckForWin(string[,,] spaces)
+    public string CheckWin(string[,,] spaces)
     {
         //choose every space
         for (int z = 0; z < 3; z++)
