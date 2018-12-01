@@ -4,20 +4,36 @@ using System.Collections.Generic;
 namespace minMaxApp {
   //Creation of Move object that stores index and score of move
   public class Move {
-    private int index;
+    private int xCoor;
+    private int yCoor;
+    private int zCoor;
     private int score;
-    public Move(int i, int s) {
-      index = i;
+    public Move(int x, int y, int z, int s) {
+      xCoor = x;
+      yCoor = y;
+      zCoor = z;
       score = s;
     }
-    public int getIndex() {
-      return this.index;
+    public int getXCoor() {
+      return this.xCoor;
+    }
+    public int getYCoor() {
+      return this.yCoor;
+    }
+    public int getZCoor() {
+      return this.zCoor;
     }
     public int getScore() {
       return this.score;
     }
-    public void setIndex(int i) {
-      this.index = i;
+    public void setXCoor(int x) {
+      this.xCoor = x;
+    }
+    public void setYCoor(int y) {
+      this.yCoor = y;
+    }
+    public void setZCoor(int z) {
+      this.zCoor = z;
     }
     public void setScore(int s) {
       this.score = s;
@@ -28,36 +44,53 @@ namespace minMaxApp {
     static string hPlayer = "X";
     static string cPlayer = "O";
 
+    /*
     //Returns list of empty spaces
-    public static List<string> emptyIndexes(List<string> board) {
-       List<string> newBoard = new List<string>();
-      for (int i = 0; i < board.Count; i++) {
-        if (!(i.Equals("O")) && !(i.Equals("X"))) {
-          newBoard.Add("" + i);
+    public static string[,,] emptyIndexes(string[,,] board) {
+      for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+          for (int k = 0; k < 3; k++) {
+            if (!(board[i,j,k].Equals("O")) && !(board[i,j,k].Equals("X"))) {
+              newBoard[i,j,k] = "0";
+            }
+          }
         }
       }
       return newBoard;
     }
+    */
 
-    //Chekcs win conditions
-    public static bool checkWin(List<string> board, string player) {
-      if( (board[0] == player && board[1] == player && board[2] == player) ||
-      (board[3] == player && board[4] == player && board[5] == player) ||
-      (board[6] == player && board[7] == player && board[8] == player) ||
-      (board[0] == player && board[3] == player && board[6] == player) ||
-      (board[1] == player && board[4] == player && board[7] == player) ||
-      (board[2] == player && board[5] == player && board[8] == player) ||
-      (board[0] == player && board[4] == player && board[8] == player) ||
-      (board[2] == player && board[4] == player && board[6] == player) ) {
+    public static bool checkFull(string[,,] board) {
+      for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+          for (int k = 0; k < 3; k++) {
+            if (!(board[i,j,k].Equals("O")) || !(board[i,j,k].Equals("X"))) {
+              return false;
+            }
+          }
+        }
+      }
+      return true;
+    }
+
+    public static bool checkSpaceFull(string[,,] board, int x, int y, int z) {
+      if(board[x,y,z] == "O" || board[x,y,z] == "X") {
         return true;
       }
       else {
         return false;
       }
     }
+
+    //Chekcs win conditions
+    public static bool checkWin(string[,,] board, string player) {
+      
+    }
+
+
     //Minimax algorithm
-    public static Move minMax(List<string> newBoard, string player) {
-      List<string> availSpots = emptyIndexes(newBoard);
+    public static Move minMax(string[,,] newBoard, string player) {
+      //List<string> availSpots = emptyIndexes(newBoard);
       //Checks win conditions and returning score if met
       if (checkWin(newBoard,hPlayer)) {
         Move m = new Move(-1,-10);
@@ -67,31 +100,36 @@ namespace minMaxApp {
         Move m = new Move(-1,10);
         return m;
       }
-      else if (availSpots.Count == 0) {
+      else if (checkFull(newBoard)) {
         Move m = new Move(-1,0);
         return m;
       }
       List<Move> moves = new List<Move>();
       //Looping through possible moves in each space
-      for (int i = 0; i < availSpots.Count; i++) {
-        Move move = new Move(-1,-1);
-        int n = Int32.Parse(availSpots[i]);
-        move.setIndex(n);
-        newBoard[n] = player;
-        if (player == cPlayer) {
-          //Recursion to check all possible moves
-          Move result = new Move(-1,-1);
-          result = minMax(newBoard,hPlayer);
-          move.setScore(result.getScore());
+      int index = 0;
+      for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+          for (int k = 0; k < 3; k++) {
+            if (!(checkSpaceFull(newBoard,i,j,k))) {
+              Move move = new Move(j,k,l,-1);
+              newBoard[j,k,l] = player;
+              if (player == cPlayer) {
+                //Recursion to check all possible moves
+                Move result = new Move(-1,-1,-1,-1);
+                result = minMax(newBoard,hPlayer);
+                move.setScore(result.getScore());
+              }
+              else {
+                Move result = new Move(-1,-1,-1,-1);
+                result = minMax(newBoard,cPlayer);
+                move.setScore(result.getScore());
+              }
+              //Replacing lost element and adding potential move to list
+              newBoard[j,k,l] = 0;
+              moves.Add(move);
+            }
+          }
         }
-        else {
-          Move result = new Move(-1,-1);
-          result = minMax(newBoard,cPlayer);
-          move.setScore(result.getScore());
-        }
-        //Replacing lost element and adding potential move to list
-        newBoard[n] = "" + move.getIndex();
-        moves.Add(move);
       }
       int bestMove = 0;
       //Checking best possible move from move list
@@ -116,16 +154,18 @@ namespace minMaxApp {
       return moves[bestMove];
     }
     public static void Main(string[] args) {
-      List<string> origBoard = new List<string>();
-      origBoard.Add("O");
-      origBoard.Add("1");
-      origBoard.Add("X");
-      origBoard.Add("X");
-      origBoard.Add("4");
-      origBoard.Add("X");
-      origBoard.Add("6");
-      origBoard.Add("O");
-      origBoard.Add("O");
+      int[,,] origBoard =
+      [[["","","O"],
+      ["O","X","O"],
+      ["X","","X"]],
+
+      [["X","O",""],
+      ["","O",""],
+      ["X","",""]],
+
+      [["","X","O"],
+      ["O","X",""],
+      ["","","O"]]]
       Move r = new Move(-1,-1);
       r = minMax(origBoard,cPlayer);
       Console.WriteLine(r.getIndex());
