@@ -84,7 +84,7 @@ namespace minMaxApp {
 
     //Chekcs win conditions
     public static bool checkWin(string[,,] board, string player) {
-      
+
     }
 
 
@@ -168,7 +168,9 @@ namespace minMaxApp {
       ["","","O"]]]
       Move r = new Move(-1,-1);
       r = minMax(origBoard,cPlayer);
-      Console.WriteLine(r.getIndex());
+      Console.WriteLine(r.getXCoor());
+      Console.WriteLine(r.getYCoor());
+      Console.WriteLine(r.getZCoor());
       Console.WriteLine(r.getScore());
     }
   }
