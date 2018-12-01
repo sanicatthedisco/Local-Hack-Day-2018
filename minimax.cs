@@ -117,7 +117,10 @@ namespace minMaxApp {
       origBoard.Add("6");
       origBoard.Add("O");
       origBoard.Add("O");
-      Console.WriteLine(minMax(origBoard,cPlayer));
+      Move r = new Move(-1,-1);
+      r = minMax(origBoard,cPlayer);
+      Console.WriteLine(r.getIndex());
+      Console.WriteLine(r.getScore());
     }
   }
 }
