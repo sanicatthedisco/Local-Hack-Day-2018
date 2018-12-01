@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 namespace minMaxApp {
+  //Creation of Move object that stores index and score of move
   public class Move {
     private int index;
     private int score;
@@ -27,6 +28,7 @@ namespace minMaxApp {
     static string hPlayer = "X";
     static string cPlayer = "O";
 
+    //Returns list of empty spaces
     public static List<string> emptyIndexes(List<string> board) {
        List<string> newBoard = new List<string>();
       for (int i = 0; i < board.Count; i++) {
@@ -37,6 +39,7 @@ namespace minMaxApp {
       return newBoard;
     }
 
+    //Chekcs win conditions
     public static bool checkWin(List<string> board, string player) {
       if( (board[0] == player && board[1] == player && board[2] == player) ||
       (board[3] == player && board[4] == player && board[5] == player) ||
@@ -52,8 +55,10 @@ namespace minMaxApp {
         return false;
       }
     }
+    //Minimax algorithm
     public static Move minMax(List<string> newBoard, string player) {
       List<string> availSpots = emptyIndexes(newBoard);
+      //Checks win conditions and returning score if met
       if (checkWin(newBoard,hPlayer)) {
         Move m = new Move(-1,-10);
         return m;
@@ -67,12 +72,14 @@ namespace minMaxApp {
         return m;
       }
       List<Move> moves = new List<Move>();
+      //Looping through possible moves in each space
       for (int i = 0; i < availSpots.Count; i++) {
         Move move = new Move(-1,-1);
         int n = Int32.Parse(availSpots[i]);
         move.setIndex(n);
         newBoard[n] = player;
         if (player == cPlayer) {
+          //Recursion to check all possible moves
           Move result = new Move(-1,-1);
           result = minMax(newBoard,hPlayer);
           move.setScore(result.getScore());
@@ -82,10 +89,12 @@ namespace minMaxApp {
           result = minMax(newBoard,cPlayer);
           move.setScore(result.getScore());
         }
+        //Replacing lost element and adding potential move to list
         newBoard[n] = "" + move.getIndex();
         moves.Add(move);
       }
       int bestMove = 0;
+      //Checking best possible move from move list
       if (player == cPlayer) {
         int bestScore = -10000;
         for (int i = 0; i < moves.Count; i++) {

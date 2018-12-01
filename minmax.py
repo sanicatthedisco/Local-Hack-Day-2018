@@ -52,7 +52,7 @@ def minMax(newBoard, player) :
         #Replacing lost element and adding potential move to list
         newBoard[availSpots[i]] = move["index"]
         moves.append(move)
-        #Checking best possible move from move list
+    #Checking best possible move from move list
     if player == cPlayer :
         bestScore = -10000
         for i in range(len(moves)) :
@@ -65,7 +65,6 @@ def minMax(newBoard, player) :
             if moves[i]["score"] < bestScore :
                 bestScore = moves[i]["score"]
                 bestMove = i
-#Return best move
     return moves[bestMove]
 
 def main() :
