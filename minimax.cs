@@ -44,22 +44,6 @@ namespace minMaxApp {
     static string hPlayer = "X";
     static string cPlayer = "O";
 
-    /*
-    //Returns list of empty spaces
-    public static string[,,] emptyIndexes(string[,,] board) {
-      for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-          for (int k = 0; k < 3; k++) {
-            if (!(board[i,j,k].Equals("O")) && !(board[i,j,k].Equals("X"))) {
-              newBoard[i,j,k] = "0";
-            }
-          }
-        }
-      }
-      return newBoard;
-    }
-    */
-
     public static bool checkFull(string[,,] board) {
       for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {

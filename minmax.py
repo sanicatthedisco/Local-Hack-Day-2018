@@ -4,7 +4,7 @@
 # ---------
 #   | O | O
 
-origBoard = ["O",1 ,"X","X",4,"X", 6 ,"O","O"]
+origBoard = ["O",1,"X","X",4,"X",6,"O","O"]
 hPlayer = "O"
 cPlayer = "X"
 
