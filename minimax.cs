@@ -43,7 +43,7 @@ namespace minMaxApp {
   public class minMaxMain {
     static string hPlayer = "X";
     static string cPlayer = "O";
-
+    //Check if board is full (draw)
     public static bool checkFull(string[,,] board) {
       for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
@@ -57,6 +57,7 @@ namespace minMaxApp {
       return true;
     }
 
+    //Check if space is full
     public static bool checkSpaceFull(string[,,] board, int x, int y, int z) {
       if(board[x,y,z] == "O" || board[x,y,z] == "X") {
         return true;

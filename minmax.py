@@ -68,6 +68,6 @@ def minMax(newBoard, player) :
     return moves[bestMove]
 
 def main() :
-    print(minMax(origBoard, cPlayer))
+    print(minMax(origBoard, cPlayer)["score"])
 
 main()
